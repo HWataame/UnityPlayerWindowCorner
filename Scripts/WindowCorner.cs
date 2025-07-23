@@ -32,12 +32,30 @@ namespace HW.UnityPlayerWindowCorner
         private static readonly User32Wrapper.EnumWindowsProc SetWindowCornerCallbackCache;
 #endif
 
+        /// <summary>
+        /// ログを出力するか
+        /// </summary>
+        private static bool isOutputLog;
+
+        /// <summary>
+        /// ログを出力するか
+        /// </summary>
+        public static bool IsOutputLog
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => isOutputLog;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => isOutputLog = value;
+        }
+
 
         /// <summary>
         /// 初期化処理
         /// </summary>
         static WindowCorner()
         {
+            // ログ出力を有効化する
+            isOutputLog = true;
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
             // 現在の環境がWindowsのスタンドアロンプレイヤーか判定する
@@ -71,10 +89,20 @@ namespace HW.UnityPlayerWindowCorner
             else
             {
                 // 実行が許可されない(WindowsのUnityEditor)場合は失敗
+                if (isOutputLog)
+                {
+                    Debug.LogWarning("[UnityPlayerWindowCorner] Windowsのスタンドアロンプレイヤー以外の環境" +
+                        $"({Application.platform})からウィンドウの角を設定しようとしました");
+                }
                 return false;
             }
 #else
             // Windows環境以外である場合は失敗
+            if (isOutputLog)
+            {
+                Debug.LogWarning("[UnityPlayerWindowCorner] Windows以外の環境" +
+                    $"({Application.platform})からウィンドウの角を設定しようとしました");
+            }
             return false;
 #endif
         }
