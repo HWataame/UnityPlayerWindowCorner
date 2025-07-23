@@ -107,6 +107,7 @@ namespace HW.UnityPlayerWindowCorner
 #endif
         }
 
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
         /// <summary>
         /// SetWindowCornerの内部処理
         /// </summary>
@@ -133,5 +134,6 @@ namespace HW.UnityPlayerWindowCorner
 
             return true;
         }
+#endif
     }
 }

@@ -8,6 +8,7 @@ DwmApiWrapper.cs
 2025 Wataame(HWataame)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 */
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
 using System.Runtime.InteropServices;
 
 namespace HW.UnityPlayerWindowCorner.Libraries
@@ -41,3 +42,4 @@ namespace HW.UnityPlayerWindowCorner.Libraries
             uint attribute, ref WindowCornerType cornerType, uint dataSize);
     }
 }
+#endif

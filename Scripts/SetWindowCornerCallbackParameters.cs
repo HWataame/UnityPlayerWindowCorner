@@ -8,6 +8,7 @@ SetWindowCornerCallbackParameters.cs
 2025 Wataame(HWataame)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 */
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
 using System.Runtime.CompilerServices;
 
 namespace HW.UnityPlayerWindowCorner
@@ -60,3 +61,4 @@ namespace HW.UnityPlayerWindowCorner
         }
     }
 }
+#endif

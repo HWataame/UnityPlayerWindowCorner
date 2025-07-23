@@ -8,6 +8,7 @@ User32Wrapper.cs
 2025 Wataame(HWataame)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 */
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
 using System.Runtime.InteropServices;
 
 namespace HW.UnityPlayerWindowCorner.Libraries
@@ -52,3 +53,4 @@ namespace HW.UnityPlayerWindowCorner.Libraries
         internal static extern uint GetWindowThreadProcessId(nint windowHandle, out uint processId);
     }
 }
+#endif

@@ -8,6 +8,7 @@ HResult.cs
 2025 Wataame(HWataame)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 */
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
 namespace HW.UnityPlayerWindowCorner.Libraries
 {
     /// <summary>
@@ -27,3 +28,4 @@ namespace HW.UnityPlayerWindowCorner.Libraries
         InvalidHandle = 0x80070006
     }
 }
+#endif
