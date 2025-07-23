@@ -41,5 +41,14 @@ namespace HW.UnityPlayerWindowCorner.Libraries
         [return: MarshalAs(UnmanagedType.Bool)]
         internal static extern bool EnumWindows(
             EnumWindowsProc callback, ref SetWindowCornerCallbackParameters parameters);
+
+        /// <summary>
+        /// ウィンドウを生成したスレッドとプロセスのIDを取得する
+        /// </summary>
+        /// <param name="windowHandle">ウィンドウのハンドル</param>
+        /// <param name="processId">プロセスID</param>
+        /// <returns>スレッドID</returns>
+        [DllImport("user32.dll", EntryPoint = "GetWindowThreadProcessId", CallingConvention = CallingConvention.Winapi)]
+        internal static extern uint GetWindowThreadProcessId(nint windowHandle, out uint processId);
     }
 }
