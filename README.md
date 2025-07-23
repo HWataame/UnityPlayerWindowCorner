@@ -1,0 +1,2 @@
+# UnityPlayerWindowCorner
+Windows11で動作するUnityのスタンドアロンプレイヤーのウィンドウの角を制御する機能
