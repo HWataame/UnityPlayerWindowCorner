@@ -69,7 +69,6 @@ namespace HW.UnityPlayerWindowCorner
         /// <summary>
         /// ウィンドウの角の種類を設定する
         /// </summary>
-        /// <param name="windowHandle">ウィンドウハンドル</param>
         /// <param name="cornerType">角の種類</param>
         /// <returns>処理結果</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
