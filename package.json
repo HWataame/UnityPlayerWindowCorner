@@ -1,6 +1,6 @@
 {
   "name": "com.hw.unityplayer_window_corner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "UnityPlayer Window Corner",
   "description": "Windows11\u3067\u52d5\u4f5c\u3059\u308bWindows\u306e\u30b9\u30bf\u30f3\u30c9\u30a2\u30ed\u30f3\u30d7\u30ec\u30a4\u30e4\u30fc\u306e\u30a6\u30a3\u30f3\u30c9\u30a6\u306e\u89d2\u3092\u5236\u5fa1\u3059\u308b\u6a5f\u80fd\u3092\u63d0\u4f9b\u3059\u308b",
   "unity": "2021.3",
