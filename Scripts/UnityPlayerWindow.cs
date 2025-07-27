@@ -56,7 +56,7 @@ namespace HW.UnityPlayerWindowCorner
         /// スタンドアロンプレイヤーのメインウィンドウのウィンドウハンドル
         /// </summary>
         /// <remarks>Windowsのスタンドアロンプレイヤー以外では常に0になる</remarks>
-        public static nint MainWindowHandle
+        internal static nint MainWindowHandle
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
@@ -72,7 +72,7 @@ namespace HW.UnityPlayerWindowCorner
         /// <summary>
         /// ウィンドウハンドルの値が有効か
         /// </summary>
-        public static bool IsHandleValid
+        internal static bool IsHandleValid
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
