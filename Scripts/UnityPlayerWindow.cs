@@ -8,6 +8,7 @@ UnityPlayerWindow.cs
 2025 Wataame(HWataame)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 */
+#if !HAS_COMMON_MAIN_WINDOW_HANDLE_GETTER_HW
 using AOT;
 using HW.UnityPlayerWindowCorner.Libraries;
 using System.Runtime.CompilerServices;
@@ -185,3 +186,4 @@ namespace HW.UnityPlayerWindowCorner
 #endif
     }
 }
+#endif

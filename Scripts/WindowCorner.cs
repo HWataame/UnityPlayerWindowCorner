@@ -11,6 +11,9 @@ WindowCorner.cs
 using HW.UnityPlayerWindowCorner.Libraries;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+#if HAS_COMMON_MAIN_WINDOW_HANDLE_GETTER_HW
+using CommonMainWindowHandle = HW.UnityPlayerWindowHandle.UnityPlayerWindow;
+#endif
 
 namespace HW.UnityPlayerWindowCorner
 {
@@ -124,7 +127,13 @@ namespace HW.UnityPlayerWindowCorner
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsHandleValid()
         {
+#if HAS_COMMON_MAIN_WINDOW_HANDLE_GETTER_HW
+            // 共通のウィンドウハンドル取得クラスが存在する場合
+            return CommonMainWindowHandle.IsHandleValid;
+#else
+            // 共通のウィンドウハンドル取得クラスが存在しない場合
             return UnityPlayerWindow.IsHandleValid;
+#endif
         }
 
         /// <summary>
@@ -134,7 +143,13 @@ namespace HW.UnityPlayerWindowCorner
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static nint GetWindowHandle()
         {
+#if HAS_COMMON_MAIN_WINDOW_HANDLE_GETTER_HW
+            // 共通のウィンドウハンドル取得クラスが存在する場合
+            return CommonMainWindowHandle.MainWindowHandle;
+#else
+            // 共通のウィンドウハンドル取得クラスが存在しない場合
             return UnityPlayerWindow.MainWindowHandle;
+#endif
         }
     }
 }

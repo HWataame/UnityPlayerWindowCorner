@@ -8,7 +8,7 @@ User32Wrapper.cs
 2025 Wataame(HWataame)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 */
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+#if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) && !HAS_COMMON_MAIN_WINDOW_HANDLE_GETTER_HW
 using System.Runtime.InteropServices;
 using System.Text;
 
