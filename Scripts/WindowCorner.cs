@@ -65,8 +65,10 @@ namespace HW.UnityPlayerWindowCorner
                 // 有効ではない(WindowsのUnityEditorなど)場合は失敗
                 if (isOutputLog)
                 {
-                    Debug.LogWarning("[UnityPlayerWindowCorner] Windowsのスタンドアロンプレイヤー以外の環境" +
-                        $"({Application.platform})からウィンドウの角を取得しようとしました");
+                    Debug.LogWarning("[UnityPlayerWindowCorner]\n\tJP: Windowsのスタンドアロンプレイヤー以外の環境" +
+                        $"({Application.platform})からウィンドウの角を取得しようとしました\n" +
+                        "\tEN: Trying to get window corner from except Windows Standalone Player on Windows" +
+                        $" ({Application.platform})");
                 }
                 return false;
             }
@@ -74,8 +76,9 @@ namespace HW.UnityPlayerWindowCorner
             // Windows環境以外である場合は失敗
             if (isOutputLog)
             {
-                Debug.LogWarning("[UnityPlayerWindowCorner] Windows以外の環境" +
-                    $"({Application.platform})からウィンドウの角を取得しようとしました");
+                Debug.LogWarning("[UnityPlayerWindowCorner]\n\tJP: Windows以外の環境" +
+                    $"({Application.platform})からウィンドウの角を取得しようとしました\n" +
+                    $"\tEN: Trying to get window corner from except Windows ({Application.platform})");
             }
             return false;
 #endif
@@ -104,8 +107,10 @@ namespace HW.UnityPlayerWindowCorner
                 // 有効ではない(WindowsのUnityEditorなど)場合は失敗
                 if (isOutputLog)
                 {
-                    Debug.LogWarning("[UnityPlayerWindowCorner] Windowsのスタンドアロンプレイヤー以外の環境" +
-                        $"({Application.platform})からウィンドウの角を設定しようとしました");
+                    Debug.LogWarning("[UnityPlayerWindowCorner]\n\tJP: Windowsのスタンドアロンプレイヤー以外の環境" +
+                        $"({Application.platform})からウィンドウの角を設定しようとしました\n" +
+                        "\tEN: Trying to set window corner from except Windows Standalone Player on Windows" +
+                        $" ({Application.platform})");
                 }
                 return false;
             }
@@ -113,8 +118,9 @@ namespace HW.UnityPlayerWindowCorner
             // Windows環境以外である場合は失敗
             if (isOutputLog)
             {
-                Debug.LogWarning("[UnityPlayerWindowCorner] Windows以外の環境" +
-                    $"({Application.platform})からウィンドウの角を設定しようとしました");
+                Debug.LogWarning("[UnityPlayerWindowCorner]\n\tJP: Windows以外の環境" +
+                    $"({Application.platform})からウィンドウの角を設定しようとしました\n" +
+                    $"\tEN: Trying to set window corner from except Windows ({Application.platform})");
             }
             return false;
 #endif
