@@ -1,7 +1,9 @@
 {
     "name": "HW.UnityPlayerWindowCorner",
     "rootNamespace": "HW.UnityPlayerWindowCorner",
-    "references": [],
+    "references": [
+        "GUID:787ff926349358c4fb04cc68562b40aa"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

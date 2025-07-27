@@ -4,41 +4,33 @@
 
 WindowCorner.cs
 ────────────────────────────────────────
-バージョン: 1.0.0
+バージョン: 1.0.1
 2025 Wataame(HWataame)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 */
-using AOT;
 using HW.UnityPlayerWindowCorner.Libraries;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using UnityEngine;
+#if HAS_COMMON_MAIN_WINDOW_HANDLE_GETTER_HW
+using CommonMainWindowHandle = HW.UnityPlayerWindowHandle.UnityPlayerWindow;
+#endif
 
 namespace HW.UnityPlayerWindowCorner
 {
     /// <summary>
-    /// ウィンドウの角に対する処理を保持するクラス
+    /// JP: ウィンドウの角に対する処理を保持するクラス<br />
+    /// EN: Processes of Standalone Player window corner
     /// </summary>
     public static class WindowCorner
     {
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-        /// <summary>
-        /// 処理を許可するか
-        /// </summary>
-        private static readonly bool IsAllowProcess;
-        /// <summary>
-        /// SetWindowCornerCallbackのデリゲートのキャッシュ
-        /// </summary>
-        private static readonly User32Wrapper.EnumWindowsProc SetWindowCornerCallbackCache;
-#endif
-
         /// <summary>
         /// ログを出力するか
         /// </summary>
-        private static bool isOutputLog;
+        private static bool isOutputLog = true;
 
         /// <summary>
-        /// ログを出力するか
+        /// JP: ログを出力するか<br />
+        /// EN: Does output "executing from unsupported environment" warning logs?
         /// </summary>
         public static bool IsOutputLog
         {
@@ -50,48 +42,42 @@ namespace HW.UnityPlayerWindowCorner
 
 
         /// <summary>
-        /// 初期化処理
+        /// JP: ウィンドウの角の種類を取得する<br />
+        /// EN: Get type of Standalone Player window corner
         /// </summary>
-        static WindowCorner()
-        {
-            // ログ出力を有効化する
-            isOutputLog = true;
-
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-            // 現在の環境がWindowsのスタンドアロンプレイヤーか判定する
-            IsAllowProcess = Application.platform == RuntimePlatform.WindowsPlayer;
-
-            // SetWindowCornerCallbackのデリゲートをキャッシュする
-            SetWindowCornerCallbackCache = SetWindowCornerCallback;
-#endif
-        }
-
-        /// <summary>
-        /// ウィンドウの角の種類を設定する
-        /// </summary>
-        /// <param name="cornerType">角の種類</param>
-        /// <returns>処理結果</returns>
+        /// <param name="cornerType">
+        /// JP: 角の種類<br />
+        /// EN: Type of Window corner
+        /// </param>
+        /// <returns>
+        /// JP: 処理結果<br />
+        /// EN: Is Process succeed?
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Set(WindowCornerType cornerType)
+        public static bool Get(out WindowCornerType cornerType)
         {
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-            if (IsAllowProcess)
-            {
-                // 実行が許可される場合
-                // パラメーターを準備する
-                var parameters = new SetWindowCornerCallbackParameters(
-                    Kernel32Wrapper.GetCurrentProcessId(), cornerType);
+            // 参照渡し引数に既定値を代入する
+            cornerType = default;
 
-                // トップレベルのウィンドウの角を処理する
-                return User32Wrapper.EnumWindows(SetWindowCornerCallbackCache, ref parameters);
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+            if (IsHandleValid())
+            {
+                // スタンドアロンプレイヤーのメインウィンドウの
+                // ウィンドウハンドルが有効である場合は角の種類を取得する
+                return DwmApiWrapper.DwmGetWindowAttribute(
+                    GetWindowHandle(), DwmApiWrapper.DwmWindowCornerPreference,
+                    ref cornerType, DwmApiWrapper.WindowCornerTypeDataSize) == HResult.Ok;
             }
             else
             {
-                // 実行が許可されない(WindowsのUnityEditor)場合は失敗
+                // スタンドアロンプレイヤーのメインウィンドウのウィンドウハンドルが
+                // 有効ではない(WindowsのUnityEditorなど)場合は失敗
                 if (isOutputLog)
                 {
-                    Debug.LogWarning("[UnityPlayerWindowCorner] Windowsのスタンドアロンプレイヤー以外の環境" +
-                        $"({Application.platform})からウィンドウの角を設定しようとしました");
+                    Debug.LogWarning("[UnityPlayerWindowCorner]\n\tJP: Windowsのスタンドアロンプレイヤー以外の環境" +
+                        $"({Application.platform})からウィンドウの角を取得しようとしました\n" +
+                        "\tEN: Trying to get window corner from except Windows Standalone Player on Windows" +
+                        $" ({Application.platform})");
                 }
                 return false;
             }
@@ -99,40 +85,93 @@ namespace HW.UnityPlayerWindowCorner
             // Windows環境以外である場合は失敗
             if (isOutputLog)
             {
-                Debug.LogWarning("[UnityPlayerWindowCorner] Windows以外の環境" +
-                    $"({Application.platform})からウィンドウの角を設定しようとしました");
+                Debug.LogWarning("[UnityPlayerWindowCorner]\n\tJP: Windows以外の環境" +
+                    $"({Application.platform})からウィンドウの角を取得しようとしました\n" +
+                    $"\tEN: Trying to get window corner from except Windows ({Application.platform})");
             }
             return false;
 #endif
         }
 
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
         /// <summary>
-        /// SetWindowCornerの内部処理
+        /// JP: ウィンドウの角の種類を設定する<br />
+        /// EN: Set type of Standalone Player window corner
         /// </summary>
-        /// <param name="windowHandle">ウィンドウハンドル</param>
-        /// <param name="parameters">パラメーター</param>
-        /// <returns>処理を続行するか</returns>
-        [MonoPInvokeCallback(typeof(User32Wrapper.EnumWindowsProc))]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static bool SetWindowCornerCallback(
-            nint windowHandle, ref SetWindowCornerCallbackParameters parameters)
+        /// <param name="cornerType">
+        /// JP: 角の種類<br />
+        /// EN: Type of Window corner
+        /// </param>
+        /// <returns>
+        /// JP: 処理結果<br />
+        /// EN: Is Process succeed?
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Set(WindowCornerType cornerType)
         {
-            if (User32Wrapper.GetWindowThreadProcessId(windowHandle, out var processId) == 0 ||
-                parameters.ProcessId != processId)
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+            if (IsHandleValid())
             {
-                // 現在のプロセスIDとウィンドウを生成したプロセスのIDが異なる場合は何もしない
-                return true;
+                // スタンドアロンプレイヤーのメインウィンドウの
+                // ウィンドウハンドルが有効である場合は角の種類を設定する
+                return DwmApiWrapper.DwmSetWindowAttribute(
+                    GetWindowHandle(), DwmApiWrapper.DwmWindowCornerPreference,
+                    ref cornerType, DwmApiWrapper.WindowCornerTypeDataSize) == HResult.Ok;
             }
-
-            // ウィンドウの角の種類を設定する
-            var cornerType = parameters.CornerType;
-            DwmApiWrapper.DwmSetWindowAttribute(
-                windowHandle, DwmApiWrapper.DwmWindowCornerPreference,
-                ref cornerType, DwmApiWrapper.WindowCornerTypeDataSize);
-
-            return true;
-        }
+            else
+            {
+                // スタンドアロンプレイヤーのメインウィンドウのウィンドウハンドルが
+                // 有効ではない(WindowsのUnityEditorなど)場合は失敗
+                if (isOutputLog)
+                {
+                    Debug.LogWarning("[UnityPlayerWindowCorner]\n\tJP: Windowsのスタンドアロンプレイヤー以外の環境" +
+                        $"({Application.platform})からウィンドウの角を設定しようとしました\n" +
+                        "\tEN: Trying to set window corner from except Windows Standalone Player on Windows" +
+                        $" ({Application.platform})");
+                }
+                return false;
+            }
+#else
+            // Windows環境以外である場合は失敗
+            if (isOutputLog)
+            {
+                Debug.LogWarning("[UnityPlayerWindowCorner]\n\tJP: Windows以外の環境" +
+                    $"({Application.platform})からウィンドウの角を設定しようとしました\n" +
+                    $"\tEN: Trying to set window corner from except Windows ({Application.platform})");
+            }
+            return false;
 #endif
+        }
+
+        /// <summary>
+        /// ウィンドウハンドルが有効か判定する
+        /// </summary>
+        /// <returns>判定結果</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsHandleValid()
+        {
+#if HAS_COMMON_MAIN_WINDOW_HANDLE_GETTER_HW
+            // 共通のウィンドウハンドル取得クラスが存在する場合
+            return CommonMainWindowHandle.IsHandleValid;
+#else
+            // 共通のウィンドウハンドル取得クラスが存在しない場合
+            return UnityPlayerWindow.IsHandleValid;
+#endif
+        }
+
+        /// <summary>
+        /// ウィンドウハンドルを取得する
+        /// </summary>
+        /// <returns>ウィンドウハンドル</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static nint GetWindowHandle()
+        {
+#if HAS_COMMON_MAIN_WINDOW_HANDLE_GETTER_HW
+            // 共通のウィンドウハンドル取得クラスが存在する場合
+            return CommonMainWindowHandle.MainWindowHandle;
+#else
+            // 共通のウィンドウハンドル取得クラスが存在しない場合
+            return UnityPlayerWindow.MainWindowHandle;
+#endif
+        }
     }
 }
