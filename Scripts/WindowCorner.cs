@@ -18,7 +18,8 @@ using CommonMainWindowHandle = HW.UnityPlayerWindowHandle.UnityPlayerWindow;
 namespace HW.UnityPlayerWindowCorner
 {
     /// <summary>
-    /// ウィンドウの角に対する処理を保持するクラス
+    /// JP: ウィンドウの角に対する処理を保持するクラス<br />
+    /// EN: Processes of Standalone Player window corner
     /// </summary>
     public static class WindowCorner
     {
@@ -28,7 +29,8 @@ namespace HW.UnityPlayerWindowCorner
         private static bool isOutputLog = true;
 
         /// <summary>
-        /// ログを出力するか
+        /// JP: ログを出力するか<br />
+        /// EN: Does output "executing from unsupported environment" warning logs?
         /// </summary>
         public static bool IsOutputLog
         {
@@ -40,10 +42,17 @@ namespace HW.UnityPlayerWindowCorner
 
 
         /// <summary>
-        /// ウィンドウの角の種類を取得する
+        /// JP: ウィンドウの角の種類を取得する<br />
+        /// EN: Get type of Standalone Player window corner
         /// </summary>
-        /// <param name="cornerType">角の種類</param>
-        /// <returns>処理結果</returns>
+        /// <param name="cornerType">
+        /// JP: 角の種類<br />
+        /// EN: Type of Window corner
+        /// </param>
+        /// <returns>
+        /// JP: 処理結果<br />
+        /// EN: Is Process succeed?
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Get(out WindowCornerType cornerType)
         {
@@ -85,10 +94,17 @@ namespace HW.UnityPlayerWindowCorner
         }
 
         /// <summary>
-        /// ウィンドウの角の種類を設定する
+        /// JP: ウィンドウの角の種類を設定する<br />
+        /// EN: Set type of Standalone Player window corner
         /// </summary>
-        /// <param name="cornerType">角の種類</param>
-        /// <returns>処理結果</returns>
+        /// <param name="cornerType">
+        /// JP: 角の種類<br />
+        /// EN: Type of Window corner
+        /// </param>
+        /// <returns>
+        /// JP: 処理結果<br />
+        /// EN: Is Process succeed?
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Set(WindowCornerType cornerType)
         {
