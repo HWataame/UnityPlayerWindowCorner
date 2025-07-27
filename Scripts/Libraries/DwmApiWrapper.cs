@@ -4,7 +4,7 @@ dwmapi.dllの関数を呼び出せるようにするラッパークラス
 
 DwmApiWrapper.cs
 ────────────────────────────────────────
-バージョン: 1.0.0
+バージョン: 1.0.1
 2025 Wataame(HWataame)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 */
@@ -27,6 +27,19 @@ namespace HW.UnityPlayerWindowCorner.Libraries
         /// </summary>
         internal const int WindowCornerTypeDataSize = 4;
 
+
+        /// <summary>
+        /// ウィンドウの領域外の属性を取得する
+        /// </summary>
+        /// <remarks>ウィンドウの角の種類用に引数を変更した版</remarks>
+        /// <param name="windowHandle">ウィンドウのハンドル</param>
+        /// <param name="attribute">取得する属性</param>
+        /// <param name="cornerType">取得する属性の値</param>
+        /// <param name="dataSize">データサイズ</param>
+        /// <returns>処理結果のHRESULT値</returns>
+        [DllImport("dwmapi.dll", EntryPoint = "DwmGetWindowAttribute", CallingConvention = CallingConvention.Winapi)]
+        internal static extern HResult DwmGetWindowAttribute(nint windowHandle,
+            uint attribute, ref WindowCornerType cornerType, uint dataSize);
 
         /// <summary>
         /// ウィンドウの領域外の属性を設定する
